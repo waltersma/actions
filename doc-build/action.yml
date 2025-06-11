@@ -243,6 +243,7 @@ runs:
         use-uv: ${{ inputs.use-uv }}
         optional-dependencies-name: ${{ inputs.optional-dependencies-name }}
         group-dependencies-name: ${{ inputs.group-dependencies-name }}
+        skip-artefacts: ${{ inputs.skip-artefacts }}
 
     # ------------------------------------------------------------------------
 

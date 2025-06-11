@@ -9,6 +9,54 @@ This document contains the release notes for the Ansys Actions project.
 
 .. towncrier release notes start
 
+`10.0.10 <https://github.com/ansys/actions/releases/tag/v10.0.10>`_ - June 11, 2025
+===================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump softprops/action-gh-release from 2.2.2 to 2.3.2 in /release-github in the release-related-actions group across 1 directory
+          - `#903 <https://github.com/ansys/actions/pull/903>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Wrong variable name for sphinx options
+          - `#900 <https://github.com/ansys/actions/pull/900>`_
+
+        * - Variable resolution
+          - `#901 <https://github.com/ansys/actions/pull/901>`_
+
+
+`10.0.9 <https://github.com/ansys/actions/releases/tag/v10.0.9>`_ - June 10, 2025
+=================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update the description of the option named package-org.
+          - `#893 <https://github.com/ansys/actions/pull/893>`_
+
+        * - Document installation by uv
+          - `#896 <https://github.com/ansys/actions/pull/896>`_
+
+
 `10.0.8 <https://github.com/ansys/actions/releases/tag/v10.0.8>`_ - June 06, 2025
 =================================================================================
 

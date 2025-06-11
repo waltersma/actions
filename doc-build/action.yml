@@ -199,6 +199,13 @@ inputs:
     default: ''
     required: false
     type: string
+    
+  skip-artefacts:
+    description: |
+      Skip-artefacts.
+    default: false
+    required: false
+    type: boolean
 
 runs:
   using: "composite"
@@ -262,3 +269,4 @@ runs:
         use-uv: ${{ inputs.use-uv }}
         optional-dependencies-name: ${{ inputs.optional-dependencies-name }}
         group-dependencies-name: ${{ inputs.group-dependencies-name }}
+        skip-artefacts: ${{ inputs.skip-artefacts }}

@@ -147,6 +147,12 @@ inputs:
     required: true
     type: string
 
+  skip-artefacts:
+    description: |
+      Whether to skip artefacts.
+    required: true
+    type: boolean
+
 runs:
   using: "composite"
   steps:
@@ -476,7 +482,7 @@ runs:
 
     - name: Set expected download directory
       id: set-expected-download-directory
-      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' }}
+      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' && inputs.skip-artefacts == 'false' }}
       env:
         EXPECTED_BUILD_DIR: ${{ steps.set-expected-build-directory.outputs.EXPECTED_BUILD_DIR }}
       shell: bash
@@ -485,7 +491,7 @@ runs:
 
     - name: Check expected download directory
       id: check-expected-download-directory
-      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' }}
+      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' && inputs.skip-artefacts == 'false' }}
       env:
         EXPECTED_DOWNLOAD_DIR: ${{ steps.set-expected-download-directory.outputs.EXPECTED_DOWNLOAD_DIR }}
       shell: bash
@@ -493,14 +499,14 @@ runs:
         echo "EXISTS_EXPECTED_DOWNLOAD_DIR=$( [ -d "${EXPECTED_DOWNLOAD_DIR}" ] && echo 'true' || echo 'false' )" >> ${GITHUB_OUTPUT}
 
     - uses: ansys/actions/_logging@main
-      if: ${{ (inputs.add-pdf-html-docs-as-assets == 'true') && (steps.check-expected-download-directory.outputs.EXISTS_EXPECTED_DOWNLOAD_DIR == 'false') }}
+      if: ${{ (inputs.add-pdf-html-docs-as-assets == 'true') && (steps.check-expected-download-directory.outputs.EXISTS_EXPECTED_DOWNLOAD_DIR == 'false') && (inputs.skip-artefacts == 'false')}}
       with:
         level: "WARNING"
         message: >
           Expected build directory ${{ steps.set-expected-download-directory.outputs.EXPECTED_DOWNLOAD_DIR }} does not exist. Creating it...
 
     - name: Create expected download directory
-      if: ${{ (inputs.add-pdf-html-docs-as-assets == 'true') && (steps.check-expected-download-directory.outputs.EXISTS_EXPECTED_DOWNLOAD_DIR == 'false') }}
+      if: ${{ (inputs.add-pdf-html-docs-as-assets == 'true') && (steps.check-expected-download-directory.outputs.EXISTS_EXPECTED_DOWNLOAD_DIR == 'false') && (inputs.skip-artefacts == 'false')}}
       shell: bash
       env:
         EXPECTED_DOWNLOAD_DIR: ${{ steps.set-expected-download-directory.outputs.EXPECTED_DOWNLOAD_DIR }}
@@ -510,21 +516,21 @@ runs:
     # ------------------------------------------------------------------------
 
     - uses: ansys/actions/_logging@main
-      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' }}
+      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' && inputs.skip-artefacts == 'false' }}
       with:
         level: "INFO"
         message: >
           Add PDF and HTML documentation as assets.
 
     - name: Compress HTML documentation
-      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' }}
+      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' && inputs.skip-artefacts == 'false' }}
       uses: vimtor/action-zip@1379ea20d4c5705669ba81fd626dd01b1c738f26 # v1.2
       with:
         files: ${{ steps.set-expected-build-directory.outputs.EXPECTED_BUILD_DIR }}/html
         dest: documentation-html.zip
 
     - name: Add assets to HTML docs
-      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' }}
+      if: ${{ inputs.add-pdf-html-docs-as-assets == 'true' && inputs.skip-artefacts == 'false' }}
       shell: bash
       env:
         EXPECTED_BUILD_DIR: ${{ steps.set-expected-build-directory.outputs.EXPECTED_BUILD_DIR }}
@@ -543,6 +549,7 @@ runs:
     # ------------------------------------------------------------------------
 
     - name: "Upload HTML documentation artifact"
+      if: ${{ inputs.skip-artefacts == 'false' }}
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: documentation-html
@@ -550,6 +557,7 @@ runs:
         retention-days: 7
 
     - name: "Upload PDF documentation artifact"
+      if: ${{ inputs.skip-artefacts == 'false' }}
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: documentation-pdf
